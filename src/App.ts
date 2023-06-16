@@ -2,6 +2,11 @@ import { Lightning, Utils } from '@lightningjs/sdk'
 
 interface AppTemplateSpec extends Lightning.Component.TemplateSpec {
   Background: object
+  Foreground: {
+    Header: {
+      Title: object
+    }
+  }
 }
 
 export class App
@@ -26,6 +31,27 @@ export class App
         h: 1080,
         color: 0xfffbb03b,
         src: Utils.asset('images/background.png'),
+      },
+      Foreground: {
+        w: 1920,
+        h: 1080,
+        rect: true,
+        color: 0x220000ff,
+        Header: {
+          w: (w) => w,
+          h: (h) => h / 7.2,
+          flex: {
+            direction: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+          Title: {
+            text: {
+              text: 'Game of Life',
+              fontSize: 60,
+            },
+          },
+        },
       },
     }
   }
