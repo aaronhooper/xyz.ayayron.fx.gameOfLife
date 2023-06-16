@@ -7,6 +7,9 @@ interface AppTemplateSpec extends Lightning.Component.TemplateSpec {
       Title: object
     }
     Main: object
+    Footer: {
+      GenerationNumber: object
+    }
   }
 }
 
@@ -53,9 +56,27 @@ export class App
             },
           },
         },
+        Footer: {
+          w: 1920,
+          h: 75,
+          x: 0,
+          y: 1080 - 75,
+          flex: {
+            direction: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          },
+          GenerationNumber: {
+            x: -50,
+            color: 0x88ffffff,
+            text: {
+              text: 'Generation #42',
+            },
+          },
+        },
         Main: {
           w: 1920,
-          h: 1080 - 150,
+          h: 1080 - 150 - 75,
           x: 0,
           y: 150,
           rect: true,
