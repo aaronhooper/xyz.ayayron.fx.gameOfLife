@@ -1,0 +1,6 @@
+{
+  "name": "Game of Life",
+  "identifier": "xyz.ayayron.fx.gameOfLife",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
