@@ -25,6 +25,9 @@ export class App extends Lightning.Component {
         h: 1080,
         rect: true,
         color: 0x220000ff,
+        flex: {
+          direction: 'column',
+        },
         Header: {
           w: 1920,
           h: 150,
@@ -40,11 +43,18 @@ export class App extends Lightning.Component {
             },
           },
         },
+        Main: {
+          w: 1920,
+          h: 1080 - 150 - 75,
+          rect: true,
+          color: 0xffff0000,
+          Cell: {
+            type: Cell,
+          },
+        },
         Footer: {
           w: 1920,
           h: 75,
-          x: 0,
-          y: 1080 - 75,
           flex: {
             direction: 'row',
             justifyContent: 'flex-end',
@@ -56,17 +66,6 @@ export class App extends Lightning.Component {
             text: {
               text: 'Generation #42',
             },
-          },
-        },
-        Main: {
-          w: 1920,
-          h: 1080 - 150 - 75,
-          x: 0,
-          y: 150,
-          rect: true,
-          color: 0xffff0000,
-          Cell: {
-            type: Cell,
           },
         },
       },
