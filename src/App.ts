@@ -1,22 +1,6 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 
-interface AppTemplateSpec extends Lightning.Component.TemplateSpec {
-  Background: object
-  Foreground: {
-    Header: {
-      Title: object
-    }
-    Main: object
-    Footer: {
-      GenerationNumber: object
-    }
-  }
-}
-
-export class App
-  extends Lightning.Component<AppTemplateSpec>
-  implements Lightning.Component.ImplementTemplateSpec<AppTemplateSpec>
-{
+export class App extends Lightning.Component {
   /*
    * The following properties exist to make it more convenient to access elements
    * below in a type-safe way. They are optional.
@@ -26,7 +10,7 @@ export class App
    */
   readonly Background = this.getByRef('Background')!
 
-  static override _template(): Lightning.Component.Template<AppTemplateSpec> {
+  static override _template() {
     return {
       w: 1920,
       h: 1080,
