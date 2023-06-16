@@ -6,6 +6,7 @@ interface AppTemplateSpec extends Lightning.Component.TemplateSpec {
     Header: {
       Title: object
     }
+    Main: object
   }
 }
 
@@ -38,8 +39,8 @@ export class App
         rect: true,
         color: 0x220000ff,
         Header: {
-          w: (w) => w,
-          h: (h) => h / 7.2,
+          w: 1920,
+          h: 150,
           flex: {
             direction: 'row',
             alignItems: 'center',
@@ -51,6 +52,14 @@ export class App
               fontSize: 60,
             },
           },
+        },
+        Main: {
+          w: 1920,
+          h: 1080 - 150,
+          x: 0,
+          y: 150,
+          rect: true,
+          color: 0xffff0000,
         },
       },
     }
