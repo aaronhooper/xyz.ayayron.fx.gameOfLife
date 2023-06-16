@@ -65,6 +65,9 @@ export class App extends Lightning.Component {
           y: 150,
           rect: true,
           color: 0xffff0000,
+          Cell: {
+            type: Cell,
+          },
         },
       },
     }
@@ -77,5 +80,20 @@ export class App extends Lightning.Component {
         url: Utils.asset('fonts/Roboto-Regular.ttf') as string,
       },
     ]
+  }
+}
+
+class Cell extends Lightning.Component {
+  static get size() {
+    return 50
+  }
+
+  static override _template() {
+    return {
+      w: Cell.size,
+      h: Cell.size,
+      rect: true,
+      color: 0xffffffff,
+    }
   }
 }
