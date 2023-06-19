@@ -89,14 +89,35 @@ export class App extends Lightning.Component {
 class GridContainer extends Lightning.Component {
   static override _template() {
     return {
-      w: 1920 * 0.8,
-      h: (1080 - 150 - 75) * 0.8,
+      w: 1536,
+      h: 684,
       rect: true,
       color: 0xff00ff00,
-      Cell: {
-        type: Cell,
+      CellRow: {
+        type: CellRow,
       },
     }
+  }
+}
+
+type FlexDirection = 'row' | 'column' | undefined
+
+class CellRow extends Lightning.Component {
+  static override _template() {
+    return {
+      w: 1536,
+      h: Cell.size,
+      flex: {
+        direction: 'row' as FlexDirection,
+      },
+    }
+  }
+
+  override _init() {
+    const length = Math.floor(1536 / Cell.size)
+    this.children = Array.from(Array(length)).map((_, index) => ({
+      type: Cell,
+    }))
   }
 }
 
