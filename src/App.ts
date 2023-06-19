@@ -45,7 +45,7 @@ export class App extends Lightning.Component {
         },
         Main: {
           w: 1920,
-          h: 1080 - 150 - 75,
+          h: 855,
           flex: {
             justifyContent: 'center',
             alignItems: 'center',
@@ -99,11 +99,69 @@ class GridContainer extends Lightning.Component {
     return {
       w: 1536,
       h: 684,
+      flex: {
+        direction: 'column' as FlexDirection,
+      },
       CellGrid: {
         type: CellGrid,
       },
+      ButtonGroup: {
+        type: ButtonGroup,
+      },
     }
   }
+}
+
+class ButtonGroup extends Lightning.Component {
+  static override _template() {
+    return {
+      w: 1536,
+      h: 171,
+      flex: {
+        justifyContent: 'space-evenly' as FlexJustifyContent,
+        alignItems: 'flex-start' as FlexAlignItems,
+      },
+      StartButton: {
+        type: Button,
+        buttonText: 'Start',
+      },
+      StopButton: {
+        type: Button,
+        buttonText: 'Stop',
+      },
+    }
+  }
+}
+
+class Button extends Lightning.Component {
+  buttonText: string | undefined
+
+  static override _template() {
+    return {
+      color: 0x11ffffff,
+      texture: Lightning.Tools.getRoundRect(200 * 2, 40 * 2, 4),
+      flex: {
+        justifyContent: 'center' as FlexJustifyContent,
+        alignItems: 'center' as FlexAlignItems,
+      },
+      Label: {
+        color: 0xaaffffff,
+        text: { fontSize: 20 * 2 },
+      },
+    }
+  }
+
+  override _init() {
+    this.tag('Label').patch({ text: { text: this.buttonText } })
+  }
+
+  //   _handleEnter() {
+  //     this.toggle = !this.toggle
+  //     if (this.toggle) {
+  //       this.buttonColor = this.buttonColor === 0xffff00ff ? 0xff00ffff : 0xffff00ff
+  //     }
+  //     this.signal('toggleText', this.toggle, this.buttonColor)
+  //   }
 }
 
 type FlexDirection = 'row' | 'column' | undefined
@@ -158,7 +216,7 @@ class Cell extends Lightning.Component {
       w: Cell.size,
       h: Cell.size,
       rect: true,
-      color: 0xffffffff,
+      color: 0xff000000,
       shader: {
         type: Lightning.shaders.RoundedRectangle,
         radius: 10,
