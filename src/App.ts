@@ -223,7 +223,7 @@ class Cell extends Lightning.Component {
 }
 
 class GenerationNumber extends Lightning.Component {
-  n: number | undefined
+  n!: number
 
   static override _template() {
     return {
@@ -247,7 +247,7 @@ class GenerationNumber extends Lightning.Component {
 type Coords = [x: number, y: number]
 
 class Main extends Lightning.Component {
-  focusCoords: Coords | undefined
+  focusCoords!: Coords
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -274,29 +274,29 @@ class Main extends Lightning.Component {
   }
 
   override _getFocused() {
-    const [x, y] = this.focusCoords!
+    const [x, y] = this.focusCoords
     return this.tag('GridContainer.CellGrid').children[y].children[x]
   }
 
   override _handleLeft() {
-    const [x] = this.focusCoords!
+    const [x] = this.focusCoords
 
     if (x > 0) {
-      this.focusCoords![0] -= 1
+      this.focusCoords[0] -= 1
     }
   }
 
   override _handleRight() {
-    const [x, y] = this.focusCoords!
+    const [x, y] = this.focusCoords
     const length = this.CellGrid.children[y].children.length
 
     if (x < length - 1) {
-      this.focusCoords![0] = x + 1
+      this.focusCoords[0] = x + 1
     }
   }
 
   override _handleUp() {
-    const [, y] = this.focusCoords!
+    const [, y] = this.focusCoords
 
     if (y > 0) {
       this.focusCoords![1] -= 1
@@ -304,7 +304,7 @@ class Main extends Lightning.Component {
   }
 
   override _handleDown() {
-    const [, y] = this.focusCoords!
+    const [, y] = this.focusCoords
     const length = this.CellGrid.children.length
 
     if (y < length - 1) {
