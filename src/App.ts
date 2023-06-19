@@ -93,6 +93,10 @@ class Cell extends Lightning.Component {
       h: Cell.size,
       rect: true,
       color: 0xffffffff,
+      shader: {
+        type: Lightning.shaders.RoundedRectangle,
+        radius: 10,
+      },
     }
   }
 }
