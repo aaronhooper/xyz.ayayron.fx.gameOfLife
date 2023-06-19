@@ -86,6 +86,16 @@ export class App extends Lightning.Component {
   }
 }
 
+type FlexAlignItems = 'flex-end' | 'center' | 'flex-start' | 'stretch' | undefined
+type FlexJustifyContent =
+  | 'flex-end'
+  | 'center'
+  | 'flex-start'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly'
+  | undefined
+
 class GridContainer extends Lightning.Component {
   static override _template() {
     return {
@@ -93,8 +103,8 @@ class GridContainer extends Lightning.Component {
       h: 684,
       rect: true,
       color: 0xff00ff00,
-      CellRow: {
-        type: CellRow,
+      CellGrid: {
+        type: CellGrid,
       },
     }
   }
@@ -109,14 +119,35 @@ class CellRow extends Lightning.Component {
       h: Cell.size,
       flex: {
         direction: 'row' as FlexDirection,
+        justifyContent: 'center' as FlexJustifyContent,
+        alignItems: 'center' as FlexAlignItems,
       },
     }
   }
 
   override _init() {
     const length = Math.floor(1536 / Cell.size)
-    this.children = Array.from(Array(length)).map((_, index) => ({
+    this.children = Array.from(Array(length)).map(() => ({
       type: Cell,
+    }))
+  }
+}
+
+class CellGrid extends Lightning.Component {
+  static override _template() {
+    return {
+      w: 1536,
+      h: 684,
+      flex: {
+        direction: 'column' as FlexDirection,
+      },
+    }
+  }
+
+  override _init() {
+    const length = Math.floor(684 / Cell.size)
+    this.children = Array.from(Array(length)).map(() => ({
+      type: CellRow,
     }))
   }
 }
