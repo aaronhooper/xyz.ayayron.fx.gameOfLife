@@ -215,6 +215,8 @@ class Cell extends Lightning.Component {
       shader: {
         type: Lightning.shaders.RoundedRectangle,
         radius: 10,
+        stroke: 1.25,
+        strokeColor: 0xffffffff,
       },
     }
   }
