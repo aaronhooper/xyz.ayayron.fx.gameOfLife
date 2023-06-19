@@ -66,13 +66,7 @@ export class App extends Lightning.Component {
             justifyContent: 'flex-end',
             alignItems: 'center',
           },
-          GenerationNumber: {
-            x: -50,
-            color: 0x88ffffff,
-            text: {
-              text: 'Generation #42',
-            },
-          },
+          GenerationNumber: { type: GenerationNumber },
         },
       },
     }
@@ -223,5 +217,27 @@ class Cell extends Lightning.Component {
         radius: 10,
       },
     }
+  }
+}
+
+class GenerationNumber extends Lightning.Component {
+  n: number | undefined
+
+  static override _template() {
+    return {
+      x: -50,
+      color: 0x88ffffff,
+      text: {
+        text: 'Generation #42',
+      },
+    }
+  }
+
+  static createLabel(n: number) {
+    return `Generation #${n}`
+  }
+
+  override _init() {
+    this.patch({ text: { text: GenerationNumber.createLabel(0) } })
   }
 }
