@@ -44,19 +44,7 @@ export class App extends Lightning.Component {
           },
         },
         Main: {
-          w: 1920,
-          h: 855,
-          flex: {
-            direction: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-          GridContainer: {
-            type: GridContainer,
-          },
-          ButtonGroup: {
-            type: ButtonGroup,
-          },
+          type: Main,
         },
         Footer: {
           w: 1920,
@@ -241,5 +229,25 @@ class GenerationNumber extends Lightning.Component {
 
   override _init() {
     this.patch({ text: { text: GenerationNumber.createLabel(0) } })
+  }
+}
+
+class Main extends Lightning.Component {
+  static override _template() {
+    return {
+      w: 1920,
+      h: 855,
+      flex: {
+        direction: 'column' as FlexDirection,
+        justifyContent: 'center' as FlexJustifyContent,
+        alignItems: 'center' as FlexAlignItems,
+      },
+      GridContainer: {
+        type: GridContainer,
+      },
+      ButtonGroup: {
+        type: ButtonGroup,
+      },
+    }
   }
 }
