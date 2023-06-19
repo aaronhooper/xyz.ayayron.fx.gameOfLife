@@ -48,8 +48,12 @@ export class App extends Lightning.Component {
           h: 1080 - 150 - 75,
           rect: true,
           color: 0xffff0000,
-          Cell: {
-            type: Cell,
+          flex: {
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          GridContainer: {
+            type: GridContainer,
           },
         },
         Footer: {
@@ -79,6 +83,20 @@ export class App extends Lightning.Component {
         url: Utils.asset('fonts/Roboto-Regular.ttf') as string,
       },
     ]
+  }
+}
+
+class GridContainer extends Lightning.Component {
+  static override _template() {
+    return {
+      w: 1920 * 0.8,
+      h: (1080 - 150 - 75) * 0.8,
+      rect: true,
+      color: 0xff00ff00,
+      Cell: {
+        type: Cell,
+      },
+    }
   }
 }
 
