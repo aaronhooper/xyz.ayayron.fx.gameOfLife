@@ -47,11 +47,15 @@ export class App extends Lightning.Component {
           w: 1920,
           h: 855,
           flex: {
+            direction: 'column',
             justifyContent: 'center',
             alignItems: 'center',
           },
           GridContainer: {
             type: GridContainer,
+          },
+          ButtonGroup: {
+            type: ButtonGroup,
           },
         },
         Footer: {
@@ -104,9 +108,6 @@ class GridContainer extends Lightning.Component {
       },
       CellGrid: {
         type: CellGrid,
-      },
-      ButtonGroup: {
-        type: ButtonGroup,
       },
     }
   }
