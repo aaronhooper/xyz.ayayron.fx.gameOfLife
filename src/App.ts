@@ -46,8 +46,6 @@ export class App extends Lightning.Component {
         Main: {
           w: 1920,
           h: 1080 - 150 - 75,
-          rect: true,
-          color: 0xffff0000,
           flex: {
             justifyContent: 'center',
             alignItems: 'center',
@@ -101,8 +99,6 @@ class GridContainer extends Lightning.Component {
     return {
       w: 1536,
       h: 684,
-      rect: true,
-      color: 0xff00ff00,
       CellGrid: {
         type: CellGrid,
       },
