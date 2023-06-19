@@ -1,13 +1,6 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 
 export class App extends Lightning.Component {
-  /*
-   * The following properties exist to make it more convenient to access elements
-   * below in a type-safe way. They are optional.
-   *
-   * See https://lightningjs.io/docs/#/lightning-core-reference/TypeScript/Components/TemplateSpecs?id=using-a-template-spec
-   * for more information.
-   */
   readonly Background = this.getByRef('Background')!
 
   static override _template() {
