@@ -1,6 +1,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 import { Game } from './conway/game'
 import { Grid } from './conway/grid'
+import { CellState } from './conway/types'
 
 export class App extends Lightning.Component {
   readonly Background = this.getByRef('Background')!
@@ -95,10 +96,12 @@ class ButtonGroup extends Lightning.Component {
       StartButton: {
         type: Button,
         buttonText: 'Start',
+        passSignals: { buttonWasPressed: true },
       },
       StopButton: {
         type: Button,
         buttonText: 'Stop',
+        passSignals: { buttonWasPressed: true },
       },
     }
   }
@@ -134,13 +137,9 @@ class Button extends Lightning.Component {
     this.tag('Label').patch({ text: { text: this.buttonText } })
   }
 
-  //   _handleEnter() {
-  //     this.toggle = !this.toggle
-  //     if (this.toggle) {
-  //       this.buttonColor = this.buttonColor === 0xffff00ff ? 0xff00ffff : 0xffff00ff
-  //     }
-  //     this.signal('toggleText', this.toggle, this.buttonColor)
-  //   }
+  override _handleEnter() {
+    this.signal('buttonWasPressed')
+  }
 }
 
 class CellRow extends Lightning.Component {
@@ -249,6 +248,7 @@ class Main extends Lightning.Component {
   isGridFocused!: boolean
   buttonFocusIndex!: number
   gameState!: Game
+  isGenerating!: boolean
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -267,6 +267,7 @@ class Main extends Lightning.Component {
       },
       ButtonGroup: {
         type: ButtonGroup,
+        signals: { buttonWasPressed: true },
       },
     }
   }
@@ -275,6 +276,7 @@ class Main extends Lightning.Component {
     this.gridFocusCoords = [0, 0]
     this.buttonFocusIndex = 0
     this.isGridFocused = true
+    this.isGenerating = false
 
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
@@ -337,5 +339,44 @@ class Main extends Lightning.Component {
 
   cellWasToggled() {
     this.gameState.grid.state = Grid.toggle(this.gameState.grid.state, this.gridFocusCoords)
+  }
+
+  buttonWasPressed() {
+    const startPressed = this.buttonFocusIndex === 0
+
+    if (startPressed) {
+      this.startGeneration()
+    } else {
+      this.isGenerating = false
+    }
+  }
+
+  startGeneration() {
+    /**
+     * TODO: Need to figure out a way to continuously render frames.
+     *
+     * Right now, calling this function by hitting the start button will render
+     * only one frame ('generation') to the canvas -- though it can be repeated
+     * any number of times.  Wrapping the nested for statements in a while loop
+     * that runs while `this.isGenerating` unexpectedly freezes the program.
+     */
+    this.isGenerating = true
+    const width = this.CellGrid.children[0].children.length
+    const height = this.CellGrid.children.length
+
+    this.gameState.next()
+
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        const cellElement = this.CellGrid.children[i].children[j]
+        const conwayCell = Grid.at(this.gameState.grid.state, [j, i])
+
+        if (conwayCell === CellState.Alive) {
+          cellElement.patch({ color: 0xffffffff })
+        } else {
+          cellElement.patch({ color: 0xff000000 })
+        }
+      }
+    }
   }
 }
