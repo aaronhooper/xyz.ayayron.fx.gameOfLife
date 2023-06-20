@@ -240,7 +240,7 @@ class GenerationNumber extends Lightning.Component {
 type Coords = [x: number, y: number]
 
 class Main extends Lightning.Component {
-  focusCoords!: Coords
+  gridFocusCoords!: Coords
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -263,45 +263,45 @@ class Main extends Lightning.Component {
   }
 
   override _init() {
-    this.focusCoords = [0, 0]
+    this.gridFocusCoords = [0, 0]
   }
 
   override _getFocused() {
-    const [x, y] = this.focusCoords
+    const [x, y] = this.gridFocusCoords
     return this.tag('GridContainer.CellGrid').children[y].children[x]
   }
 
   override _handleLeft() {
-    const [x] = this.focusCoords
+    const [x] = this.gridFocusCoords
 
     if (x > 0) {
-      this.focusCoords[0] -= 1
+      this.gridFocusCoords[0] -= 1
     }
   }
 
   override _handleRight() {
-    const [x, y] = this.focusCoords
+    const [x, y] = this.gridFocusCoords
     const length = this.CellGrid.children[y].children.length
 
     if (x < length - 1) {
-      this.focusCoords[0] = x + 1
+      this.gridFocusCoords[0] = x + 1
     }
   }
 
   override _handleUp() {
-    const [, y] = this.focusCoords
+    const [, y] = this.gridFocusCoords
 
     if (y > 0) {
-      this.focusCoords![1] -= 1
+      this.gridFocusCoords![1] -= 1
     }
   }
 
   override _handleDown() {
-    const [, y] = this.focusCoords
+    const [, y] = this.gridFocusCoords
     const length = this.CellGrid.children.length
 
     if (y < length - 1) {
-      this.focusCoords![1] += 1
+      this.gridFocusCoords![1] += 1
     }
   }
 }
