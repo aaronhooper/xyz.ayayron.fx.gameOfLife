@@ -36,9 +36,7 @@ export class App extends Lightning.Component {
             },
           },
         },
-        Main: {
-          type: Main,
-        },
+        Main: { type: Main },
         Footer: {
           w: 1920,
           h: 75,
@@ -131,6 +129,14 @@ class Button extends Lightning.Component {
     }
   }
 
+  override _focus() {
+    this.patch({ smooth: { scale: 1.25 }, zIndex: 1 })
+  }
+
+  override _unfocus() {
+    this.patch({ smooth: { scale: 1 }, zIndex: 0 })
+  }
+
   override _init() {
     this.tag('Label').patch({ text: { text: this.buttonText } })
   }
@@ -161,9 +167,7 @@ class CellRow extends Lightning.Component {
 
   override _init() {
     const length = Math.floor(1536 / Cell.size)
-    this.children = Array.from(Array(length)).map(() => ({
-      type: Cell,
-    }))
+    this.children = Array.from(Array(length)).map(() => ({ type: Cell }))
   }
 }
 
@@ -207,7 +211,7 @@ class Cell extends Lightning.Component {
   }
 
   override _focus() {
-    this.patch({ smooth: { scale: 1.5 }, zIndex: 1 })
+    this.patch({ smooth: { scale: 1.25 }, zIndex: 1 })
   }
 
   override _unfocus() {
@@ -241,6 +245,8 @@ type Coords = [x: number, y: number]
 
 class Main extends Lightning.Component {
   gridFocusCoords!: Coords
+  isGridFocused!: boolean
+  buttonFocusIndex!: number
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -264,18 +270,27 @@ class Main extends Lightning.Component {
 
   override _init() {
     this.gridFocusCoords = [0, 0]
+    this.buttonFocusIndex = 0
+    this.isGridFocused = true
   }
 
   override _getFocused() {
-    const [x, y] = this.gridFocusCoords
-    return this.tag('GridContainer.CellGrid').children[y].children[x]
+    if (this.isGridFocused) {
+      const [x, y] = this.gridFocusCoords
+      return this.tag('GridContainer.CellGrid').children[y].children[x]
+    }
+
+    const i = this.buttonFocusIndex
+    return this.getByRef('ButtonGroup').children[i]
   }
 
   override _handleLeft() {
     const [x] = this.gridFocusCoords
 
-    if (x > 0) {
-      this.gridFocusCoords[0] -= 1
+    if (this.isGridFocused && x > 0) {
+      this.gridFocusCoords[0] = x - 1
+    } else {
+      this.buttonFocusIndex = 0
     }
   }
 
@@ -283,16 +298,20 @@ class Main extends Lightning.Component {
     const [x, y] = this.gridFocusCoords
     const length = this.CellGrid.children[y].children.length
 
-    if (x < length - 1) {
+    if (this.isGridFocused && x < length - 1) {
       this.gridFocusCoords[0] = x + 1
+    } else {
+      this.buttonFocusIndex = 1
     }
   }
 
   override _handleUp() {
     const [, y] = this.gridFocusCoords
 
-    if (y > 0) {
-      this.gridFocusCoords![1] -= 1
+    if (!this.isGridFocused) {
+      this.isGridFocused = !this.isGridFocused
+    } else if (y > 0) {
+      this.gridFocusCoords![1] = y - 1
     }
   }
 
@@ -300,8 +319,12 @@ class Main extends Lightning.Component {
     const [, y] = this.gridFocusCoords
     const length = this.CellGrid.children.length
 
-    if (y < length - 1) {
-      this.gridFocusCoords![1] += 1
+    if (this.isGridFocused) {
+      if (y < length - 1) {
+        this.gridFocusCoords![1] = y + 1
+      } else {
+        this.isGridFocused = !this.isGridFocused
+      }
     }
   }
 }
