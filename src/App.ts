@@ -65,16 +65,6 @@ export class App extends Lightning.Component {
   }
 }
 
-type FlexAlignItems = 'flex-end' | 'center' | 'flex-start' | 'stretch' | undefined
-type FlexJustifyContent =
-  | 'flex-end'
-  | 'center'
-  | 'flex-start'
-  | 'space-between'
-  | 'space-around'
-  | 'space-evenly'
-  | undefined
-
 class GridContainer extends Lightning.Component {
   static override _template() {
     return {
@@ -149,8 +139,6 @@ class Button extends Lightning.Component {
   //     this.signal('toggleText', this.toggle, this.buttonColor)
   //   }
 }
-
-type FlexDirection = 'row' | 'column' | undefined
 
 class CellRow extends Lightning.Component {
   static override _template() {
@@ -240,8 +228,6 @@ class GenerationNumber extends Lightning.Component {
     this.patch({ text: { text: GenerationNumber.createLabel(0) } })
   }
 }
-
-type Coords = [x: number, y: number]
 
 class Main extends Lightning.Component {
   gridFocusCoords!: Coords
