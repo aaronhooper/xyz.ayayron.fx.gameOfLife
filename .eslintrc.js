@@ -36,6 +36,7 @@ module.exports = {
         printWidth: 100,
       },
     ],
+    'no-console': ['error', { allow: ['warn', 'error'] }],
   },
   parserOptions: {
     parser: 'babel-eslint',
