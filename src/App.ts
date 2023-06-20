@@ -1,4 +1,6 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
+import { Game } from './conway/game'
+import { Grid } from './conway/grid'
 
 export class App extends Lightning.Component {
   readonly Background = this.getByRef('Background')!
@@ -75,6 +77,7 @@ class GridContainer extends Lightning.Component {
       },
       CellGrid: {
         type: CellGrid,
+        passSignals: { cellWasToggled: true },
       },
     }
   }
@@ -155,7 +158,10 @@ class CellRow extends Lightning.Component {
 
   override _init() {
     const length = Math.floor(1536 / Cell.size)
-    this.children = Array.from(Array(length)).map(() => ({ type: Cell }))
+    this.children = Array.from(Array(length)).map(() => ({
+      type: Cell,
+      passSignals: { cellWasToggled: true },
+    }))
   }
 }
 
@@ -174,6 +180,7 @@ class CellGrid extends Lightning.Component {
     const length = Math.floor(684 / Cell.size)
     this.children = Array.from(Array(length)).map(() => ({
       type: CellRow,
+      passSignals: { cellWasToggled: true },
     }))
   }
 }
@@ -205,11 +212,19 @@ class Cell extends Lightning.Component {
   override _unfocus() {
     this.patch({ smooth: { scale: 1 }, zIndex: 0 })
   }
+
+  override _handleEnter() {
+    this.signal('cellWasToggled')
+    this.toggle()
+  }
+
+  toggle() {
+    const color = this.color === 0xffffffff ? 0xff000000 : 0xffffffff
+    this.patch({ color })
+  }
 }
 
 class GenerationNumber extends Lightning.Component {
-  n!: number
-
   static override _template() {
     return {
       x: -50,
@@ -233,6 +248,7 @@ class Main extends Lightning.Component {
   gridFocusCoords!: Coords
   isGridFocused!: boolean
   buttonFocusIndex!: number
+  gameState!: Game
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -247,6 +263,7 @@ class Main extends Lightning.Component {
       },
       GridContainer: {
         type: GridContainer,
+        signals: { cellWasToggled: true },
       },
       ButtonGroup: {
         type: ButtonGroup,
@@ -258,6 +275,10 @@ class Main extends Lightning.Component {
     this.gridFocusCoords = [0, 0]
     this.buttonFocusIndex = 0
     this.isGridFocused = true
+
+    const width = this.CellGrid.children[0].children.length
+    const height = this.CellGrid.children.length
+    this.gameState = new Game(new Grid(width, height))
   }
 
   override _getFocused() {
@@ -312,5 +333,9 @@ class Main extends Lightning.Component {
         this.isGridFocused = !this.isGridFocused
       }
     }
+  }
+
+  cellWasToggled() {
+    this.gameState.grid.state = Grid.toggle(this.gameState.grid.state, this.gridFocusCoords)
   }
 }
