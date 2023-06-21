@@ -2,3 +2,5 @@
 dist
 build
 build-ts
+src/test
+jest.config.js
