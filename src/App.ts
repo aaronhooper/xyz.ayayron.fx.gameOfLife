@@ -39,7 +39,10 @@ export class App extends Lightning.Component {
             },
           },
         },
-        Main: { type: Main },
+        Main: {
+          type: Main,
+          signals: { generationNumberUpdated: true },
+        },
         Footer: {
           w: 1920,
           h: 75,
@@ -52,6 +55,12 @@ export class App extends Lightning.Component {
         },
       },
     }
+  }
+
+  generationNumberUpdated(n: number) {
+    this.tag('Foreground.Footer.GenerationNumber').patch({
+      text: { text: GenerationNumber.createLabel(n) },
+    })
   }
 
   override _getFocused() {
@@ -228,9 +237,6 @@ class GenerationNumber extends Lightning.Component {
     return {
       x: -50,
       color: 0x88ffffff,
-      text: {
-        text: 'Generation #42',
-      },
     }
   }
 
@@ -356,6 +362,7 @@ class Main extends Lightning.Component {
 
     this.gameInterval = setInterval(() => {
       this.gameState.next()
+      this.signal('generationNumberUpdated', this.gameState.generation)
 
       for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
