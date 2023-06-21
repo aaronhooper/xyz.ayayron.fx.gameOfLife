@@ -360,7 +360,7 @@ class Main extends Lightning.Component {
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
 
-    this.gameInterval = setInterval(() => {
+    this.gameInterval = window.setInterval(() => {
       this.gameState.next()
       this.signal('generationNumberUpdated', this.gameState.generation)
 
