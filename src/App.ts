@@ -214,7 +214,7 @@ class Cell extends Lightning.Component {
   }
 
   override _focus() {
-    this.patch({ smooth: { scale: 1.25 }, zIndex: 1 })
+    this.patch({ smooth: { scale: 1.4 }, zIndex: 1 })
   }
 
   override _unfocus() {
