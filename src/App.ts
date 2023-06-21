@@ -248,7 +248,7 @@ class Main extends Lightning.Component {
   isGridFocused!: boolean
   buttonFocusIndex!: number
   gameState!: Game
-  isGenerating!: boolean
+  gameInterval: number | undefined
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -276,7 +276,6 @@ class Main extends Lightning.Component {
     this.gridFocusCoords = [0, 0]
     this.buttonFocusIndex = 0
     this.isGridFocused = true
-    this.isGenerating = false
 
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
@@ -347,36 +346,29 @@ class Main extends Lightning.Component {
     if (startPressed) {
       this.startGeneration()
     } else {
-      this.isGenerating = false
+      clearInterval(this.gameInterval)
     }
   }
 
   startGeneration() {
-    /**
-     * TODO: Need to figure out a way to continuously render frames.
-     *
-     * Right now, calling this function by hitting the start button will render
-     * only one frame ('generation') to the canvas -- though it can be repeated
-     * any number of times.  Wrapping the nested for statements in a while loop
-     * that runs while `this.isGenerating` unexpectedly freezes the program.
-     */
-    this.isGenerating = true
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
 
-    this.gameState.next()
+    this.gameInterval = setInterval(() => {
+      this.gameState.next()
 
-    for (let i = 0; i < height; i++) {
-      for (let j = 0; j < width; j++) {
-        const cellElement = this.CellGrid.children[i].children[j]
-        const conwayCell = Grid.at(this.gameState.grid.state, [j, i])
+      for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
+          const cellElement = this.CellGrid.children[i].children[j]
+          const conwayCell = Grid.at(this.gameState.grid.state, [j, i])
 
-        if (conwayCell === CellState.Alive) {
-          cellElement.patch({ color: 0xffffffff })
-        } else {
-          cellElement.patch({ color: 0xff000000 })
+          if (conwayCell === CellState.Alive) {
+            cellElement.patch({ color: 0xffffffff })
+          } else {
+            cellElement.patch({ color: 0xff000000 })
+          }
         }
       }
-    }
+    }, 100)
   }
 }
