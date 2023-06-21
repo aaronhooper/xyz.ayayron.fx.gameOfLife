@@ -2,7 +2,8 @@
   "name": "xyz.ayayron.fx.gameOfLife",
   "description": "Game of Life",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest ."
   },
   "dependencies": {
     "@lightningjs/sdk": "^5.3.2",
