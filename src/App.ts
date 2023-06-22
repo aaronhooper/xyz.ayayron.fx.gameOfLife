@@ -255,6 +255,7 @@ class Main extends Lightning.Component {
   buttonFocusIndex!: number
   gameState!: Game
   gameInterval: number | undefined
+  isGenerating!: boolean
 
   readonly CellGrid = this.tag('GridContainer.CellGrid')
 
@@ -282,6 +283,7 @@ class Main extends Lightning.Component {
     this.gridFocusCoords = [0, 0]
     this.buttonFocusIndex = 0
     this.isGridFocused = true
+    this.isGenerating = false
 
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
@@ -348,15 +350,18 @@ class Main extends Lightning.Component {
 
   buttonWasPressed() {
     const startPressed = this.buttonFocusIndex === 0
+    const stopPressed = this.buttonFocusIndex === 1
 
-    if (startPressed) {
+    if (startPressed && !this.isGenerating) {
       this.startGeneration()
-    } else {
+    } else if (stopPressed) {
       clearInterval(this.gameInterval)
+      this.isGenerating = false
     }
   }
 
   startGeneration() {
+    this.isGenerating = true
     const width = this.CellGrid.children[0].children.length
     const height = this.CellGrid.children.length
 
