@@ -1,0 +1,47 @@
+stages:
+  - build
+  - deploy
+  - cleanup
+
+build:
+  image: registry.fxdigital.uk/fxd-dev-util/ci-docker-images/node/14:latest
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - build
+  tags:
+    - Kubernetes
+
+deploy-main:
+  image: registry.fxdigital.uk/fxd-dev-util/ci-docker-images/aws-cli:latest
+  stage: deploy
+  script:
+    - aws s3 cp build/ s3://${AWS_S3_BUCKET_NAME}/${CI_COMMIT_REF_SLUG}/ --recursive
+  environment:
+    name: main
+    url: http://${AWS_S3_BUCKET_NAME}.s3-website.eu-west-2.amazonaws.com/${CI_COMMIT_REF_SLUG}
+  only:
+    - main
+  needs:
+    - build
+  tags:
+    - Kubernetes
+
+cleanup-main:
+  image: registry.fxdigital.uk/fxd-dev-util/ci-docker-images/aws-cli:latest
+  stage: cleanup
+  script:
+    - aws s3 rm s3://${AWS_S3_BUCKET_NAME}/${CI_COMMIT_REF_SLUG} --recursive
+  environment:
+    name: main
+    action: stop
+  only:
+    - main
+  when: manual
+  needs:
+    - deploy-main
+  tags:
+    - Kubernetes
