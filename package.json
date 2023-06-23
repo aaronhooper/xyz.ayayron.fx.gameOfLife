@@ -4,7 +4,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "jest .",
-    "build": "webpack --config webpack.config.js"
+    "build": "lng build"
   },
   "dependencies": {
     "@lightningjs/sdk": "^5.3.2",
